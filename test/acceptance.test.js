@@ -1,9 +1,11 @@
 describe('a doodle like app', () => {
-  describe('the creation of an event', () => {
-    it('gives an URL to share with attendees', () => {
+  describe('create event scheduling poll', () => {
+    it('gives an URL to share with attendees to vote', () => {
     })
 
-    it('gives an URL to administrate the event', () => {
+    context('someone visits the voting URL', () => {
+      it('allows user to confirm attendance', () => {
+      })
     })
   })
 })
