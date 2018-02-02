@@ -4,7 +4,15 @@
   "main": "index.js",
   "author": "Jorge Velasco <jorge@typeform.com>",
   "license": "MIT",
-  "dependencies": {
-    "jest": "^22.1.4"
+  "dependencies": {},
+  "devDependencies": {
+    "jest": "^22.1.4",
+    "jest-plugin-context": "^2.6.0"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "jest": {
+    "setupFiles": ["jest-plugin-context/setup"]
   }
 }
