@@ -1,0 +1,10 @@
+{
+  "name": "doodly",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Jorge Velasco <jorge@typeform.com>",
+  "license": "MIT",
+  "dependencies": {
+    "jest": "^22.1.4"
+  }
+}
