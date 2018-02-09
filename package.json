@@ -1,18 +1,16 @@
 {
-  "name": "doodly",
-  "version": "1.0.0",
-  "main": "index.js",
-  "author": "Jorge Velasco <jorge@typeform.com>",
-  "license": "MIT",
-  "dependencies": {},
-  "devDependencies": {
-    "jest": "^22.1.4",
-    "jest-plugin-context": "^2.6.0"
+  "name": "app",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-scripts": "1.1.0"
   },
   "scripts": {
-    "test": "jest"
-  },
-  "jest": {
-    "setupFiles": ["jest-plugin-context/setup"]
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
   }
 }
