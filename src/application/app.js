@@ -5,8 +5,8 @@ class App {
     this.baseUrl = baseUrl
   }
 
-  newEventPoll(aTittle, aDate) {
-    return new EventPoll(this.baseUrl)
+  newEventPoll(aTitle, aDate) {
+    return new EventPoll(this.baseUrl, aTitle, aDate)
   }
 }
 

@@ -7,11 +7,16 @@ describe('a doodle like app', () => {
   const app = new App(baseUrl)
 
   describe('create event scheduling poll', () => {
-    const aTittle = 'Event tittle'
+    const aTitle = 'Event title'
     const aDate = new Date
-    const anEventPoll = app.newEventPoll(aTittle, aDate)
+    const anEventPoll = app.newEventPoll(aTitle, aDate)
 
     expect(anEventPoll).toBeInstanceOf(EventPoll)
+
+    it('has a title and date', () => {
+      expect(anEventPoll.title).toBe(aTitle)
+      expect(anEventPoll.date).toBe(aDate)
+    })
 
     it('gives an URL to share with attendees to vote', () => {
       const aVotingUrl = anEventPoll.votingUrl()
