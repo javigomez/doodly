@@ -2,8 +2,9 @@ import EventPoll from '../event_poll'
 import VotingUrl from '../voting_url'
 import App from './app'
 
+const baseUrl = 'http://domain.org'
+
 describe('a doodle like app', () => {
-  const baseUrl = "http://domain.org";
   const app = new App(baseUrl)
 
   describe('create event scheduling poll', () => {
