@@ -1,16 +1,20 @@
 import EventPoll from '../event_poll'
 import VotingUrl from '../voting_url'
 import App from './app'
+var MemoryStorage = require('memorystorage');
+
+var repository = new MemoryStorage('doodlyDB');
 
 const baseUrl = 'http://domain.org'
 
 describe('a doodle like app', () => {
-  const app = new App(baseUrl)
+  const app = new App(baseUrl, repository)
 
   describe('create event scheduling poll', () => {
     const aTitle = 'Event title'
     const aDate = new Date
-    const anEventPoll = app.newEventPoll(aTitle, aDate)
+    app.newEventPoll(aTitle, aDate)
+    const anEventPoll = app.repository.getItem('aEventPoll')
 
     expect(anEventPoll).toBeInstanceOf(EventPoll)
 

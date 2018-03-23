@@ -1,12 +1,14 @@
 import EventPoll from "../event_poll";
 
 class App {
-  constructor(baseUrl) {
+  constructor(baseUrl, repository) {
     this.baseUrl = baseUrl
+    this.repository = repository
   }
 
   newEventPoll(aTitle, aDate) {
-    return new EventPoll(this.baseUrl, aTitle, aDate)
+    var aEventPoll = new EventPoll(this.baseUrl, aTitle, aDate)
+    this.repository.setItem('aEventPoll', aEventPoll)
   }
 }
 
