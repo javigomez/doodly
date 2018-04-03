@@ -1,9 +1,10 @@
 import VotingUrl from './voting_url'
 const Url = require('url')
+import { ulid } from 'ulid'
 
 describe('a voting url', () => {
     const abaseUrl = 'http://domain.org'
-    const anEventPoll = { 'id': 32 }
+    const anEventPoll = { 'id': ulid() }
 
     const aVotingUrl = new VotingUrl(abaseUrl, anEventPoll)
 
