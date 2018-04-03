@@ -1,16 +1,19 @@
 import EventPoll from '../event_poll'
 import VotingUrl from '../voting_url'
 import App from './app'
+import EventPollRepository from '../infrastructure/in_memory/event_poll_repository'
 
 const baseUrl = 'http://domain.org'
 
 describe('a doodle like app', () => {
-  const app = new App(baseUrl)
+  const eventPollRepository = new EventPollRepository()
+  const app = new App(baseUrl, eventPollRepository)
 
   describe('create event scheduling poll', () => {
     const aTitle = 'Event title'
     const aDate = new Date
-    const anEventPoll = app.newEventPoll(aTitle, aDate)
+    const anEventPollId = app.newEventPoll(aTitle, aDate)
+    const anEventPoll = eventPollRepository.findById(anEventPollId)
 
     expect(anEventPoll).toBeInstanceOf(EventPoll)
 
