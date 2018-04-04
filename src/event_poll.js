@@ -1,4 +1,5 @@
 import VotingUrl from './voting_url'
+import { ulid } from 'ulid'
 
 class EventPoll {
   constructor(id, baseUrl, title, date) {

@@ -3,7 +3,7 @@ const Url = require('url')
 
 describe('a voting url', () => {
     const abaseUrl = 'http://domain.org'
-    const anEventPoll = { 'id': 32 }
+    const anEventPoll = { 'id': '32' }
 
     const aVotingUrl = new VotingUrl(abaseUrl, anEventPoll)
 
