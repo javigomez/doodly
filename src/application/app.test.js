@@ -11,7 +11,7 @@ describe('a doodle like app', () => {
 
   describe('create event scheduling poll', () => {
     const aTitle = 'Event title'
-    const aDate = new Date
+    const aDate = new Date()
     const anEventPollId = app.newEventPoll(aTitle, aDate)
     const anEventPoll = eventPollRepository.findById(anEventPollId)
 
