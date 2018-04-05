@@ -2,7 +2,7 @@ import EventPoll from '../event_poll'
 import VotingUrl from '../voting_url'
 import App from './app'
 import EventPollRepository from '../infrastructure/in_memory/event_poll_repository'
-
+import faker from 'faker'
 const baseUrl = 'http://domain.org'
 
 describe('a doodle like app', () => {
@@ -11,15 +11,15 @@ describe('a doodle like app', () => {
 
   describe('create event scheduling poll', () => {
     const aTitle = 'Event title'
-    const aDate = new Date()
-    const anEventPollId = app.newEventPoll(aTitle, aDate)
+    const possibleDates = [faker.date.future(), faker.date.future()]
+    const anEventPollId = app.newEventPoll(aTitle, possibleDates)
     const anEventPoll = eventPollRepository.findById(anEventPollId)
 
     expect(anEventPoll).toBeInstanceOf(EventPoll)
 
-    it('has a title and date', () => {
+    it('has a title and possible dates for the event', () => {
       expect(anEventPoll.title).toBe(aTitle)
-      expect(anEventPoll.date).toBe(aDate)
+      expect(anEventPoll.possibleDates).toBe(possibleDates)
     })
 
     it('gives an URL to share with attendees to vote', () => {
