@@ -7,8 +7,8 @@ class App {
     this.eventPollRepository = eventPollRepository
   }
 
-  newEventPoll (aTitle, aDate) {
-    const aEventPoll = new EventPoll(ulid(), this.baseUrl, aTitle, aDate)
+  newEventPoll (aTitle, posibleDates) {
+    const aEventPoll = new EventPoll(ulid(), this.baseUrl, aTitle, posibleDates)
     this.eventPollRepository.save(aEventPoll)
     return aEventPoll.id
   }

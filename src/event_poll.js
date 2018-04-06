@@ -1,11 +1,11 @@
 import VotingUrl from './voting_url'
 
 class EventPoll {
-  constructor (id, baseUrl, title, date) {
+  constructor (id, baseUrl, title, possibleDates) {
     this.id = id
     this.baseUrl = baseUrl
     this.title = title
-    this.date = date
+    this.possibleDates = possibleDates
   }
 
   votingUrl () {
