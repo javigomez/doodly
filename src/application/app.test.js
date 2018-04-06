@@ -2,7 +2,6 @@ import EventPoll from '../event_poll'
 import VotingUrl from '../voting_url'
 import App from './app'
 import EventPollRepository from '../infrastructure/in_memory/event_poll_repository'
-import faker from 'faker'
 const baseUrl = 'http://domain.org'
 
 describe('a doodle like app', () => {
@@ -11,7 +10,7 @@ describe('a doodle like app', () => {
 
   describe('create event scheduling poll', () => {
     const aTitle = 'Event title'
-    const possibleDates = [faker.date.future(), faker.date.future()]
+    const possibleDates = [new Date(), new Date()]
     const anEventPollId = app.newEventPoll(aTitle, possibleDates)
     const anEventPoll = eventPollRepository.findById(anEventPollId)
 
