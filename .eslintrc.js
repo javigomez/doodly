@@ -1,5 +1,4 @@
 module.exports = {
-    "extends": "standard",
     "env": {
         "jest": true
     },
@@ -7,6 +6,7 @@ module.exports = {
         "react"
     ],
     "extends": [
+            "standard",
             "eslint:recommended",
             "plugin:react/recommended"
     ],
