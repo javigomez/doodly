@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Event Poll Creation Page renders without crashing 1`] = `
+Array [
+  <div>
+    <h1>
+        Create a Event Poll
+    </h1>
+    <form
+        method="post"
+        name="message"
+    >
+        <label
+            htmlFor="title"
+        >
+            Event title
+        </label>
+        <input
+            id="title"
+            type="text"
+        />
+        <input
+            type="submit"
+            value="Submit"
+        />
+    </form>
+</div>,
+]
+`;
