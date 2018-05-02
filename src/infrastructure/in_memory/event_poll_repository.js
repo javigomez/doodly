@@ -1,15 +1,17 @@
-import MemoryStorage from 'memorystorage'
-
 export default class EventPollRepository {
   constructor () {
-    this.storage = new MemoryStorage('doodlddddyDB')
+    this.storage = {}
   }
 
   findById (id) {
-    return this.storage.getItem(id)
+    return this.storage[id]
   }
 
   save (eventPoll) {
-    this.storage.setItem(eventPoll.id, eventPoll)
+    this.storage[eventPoll.id] = eventPoll
+  }
+
+  all () {
+    return Object.keys(this.storage).map(eventPollId => this.storage[eventPollId])
   }
 }
