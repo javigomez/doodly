@@ -13,13 +13,13 @@ describe('Create a poll', () => {
 
     createPoll.find('#title')
       .simulate('change', { target: { value: 'An Event Poll' } })
-    
-    const chosenDates = tomorrow()
+
+    const chosenDates = [ tomorrow(), tomorrow()]
     createPoll.find('#date')
       .simulate('change', { target: { value: chosenDates } })
     createPoll.find('form').first()
       .simulate('submit')
-  
+
       const existingPolls = inMemoryPollingRepository.all()
       expect(existingPolls.length).toBe(1)
       expect(existingPolls[0].title).toBe('An Event Poll')
