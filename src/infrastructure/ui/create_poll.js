@@ -1,34 +1,16 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import App from '../../application/app'
-import EventPollRepository from '../in_memory/event_poll_repository'
-const baseUrl = 'http://domain.org'
-
 
 export class CreatePoll extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       title: '',
-      date: ''
+      date: '',
     }
     this.onFormSubmit = this.onFormSubmit.bind(this)
     this.handleTitleChange = this.handleTitleChange.bind(this);
     this.handleDateChange = this.handleDateChange.bind(this);
-  }
-
-  handleTitleChange(e){
-    this.setState({title: e.target.value})
-  }
-
-  handleDateChange(e){
-    this.setState({date: e.target.value})
-  }
-  
-  onFormSubmit(e) {
-    e.preventDefault()
-    const app = new App(this.props.domain, this.props.pollingRepository)
-    app.newEventPoll(this.state.title, [this.state.date])
   }
 
   render() {
@@ -40,11 +22,23 @@ export class CreatePoll extends React.Component {
       </form>
     )
   }
+
+  onFormSubmit(e) {
+    e.preventDefault()
+    this.props.createPoll(this.state.title, [this.state.date])
+  }
+
+  handleTitleChange(e){
+    this.setState({title: e.target.value})
+  }
+
+  handleDateChange(e){
+    this.setState({date: e.target.value})
+  }
 }
 
 CreatePoll.propTypes = {
-  domain: PropTypes.string,
-  pollingRepository: PropTypes.instanceOf(EventPollRepository).isRequired,
+  createPoll: PropTypes.func.isRequired,
 }
 
 export default CreatePoll
