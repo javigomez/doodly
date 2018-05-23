@@ -1,3 +1,26 @@
 language: node_js
 node_js:
   - "8"
+
+# Travis runs on PUSH events ONLY in master branch. This does not affect to Travis running on PULL REQUEST event
+branches:
+  only:
+    - master
+
+stages:
+  - name: pull_request
+    if: branch = master AND type = pull_request
+
+jobs:
+  include:
+    - stage: pull_request
+      install:
+        - yarn
+      before_script:
+        - yarn lint
+        - yarn test
+
+cache:
+  cache: yarn
+  directories:
+    - node_modules
