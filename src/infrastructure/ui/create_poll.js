@@ -7,6 +7,8 @@ export class CreatePoll extends React.Component {
     this.state = {
       title: '',
       date: '',
+      creatingPoll: false,
+      createdPollId: null,
     }
     this.onFormSubmit = this.onFormSubmit.bind(this)
     this.handleTitleChange = this.handleTitleChange.bind(this);
@@ -17,15 +19,17 @@ export class CreatePoll extends React.Component {
     return (
       <form onSubmit={(e) => this.onFormSubmit(e)}>
         <input type='text' id='title' onChange={this.handleTitleChange} />
-        <input type='text' id='date' onChange={this.handleDateChange} />
-        <input type='submit' id='submit' />
+        <input type='date' id='date' onChange={this.handleDateChange} />
+        <input type='submit' id='submit' disabled={this.state.creatingPoll ? 'disabled' : ''} />
       </form>
     )
   }
 
   onFormSubmit(e) {
     e.preventDefault()
+    this.setState({ creatingPoll: true })
     this.props.createPoll(this.state.title, [this.state.date])
+      .then(pollId => this.setState({ createdPollId: pollId }))
   }
 
   handleTitleChange(e){
