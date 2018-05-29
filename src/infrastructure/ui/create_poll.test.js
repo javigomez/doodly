@@ -3,11 +3,11 @@ import { MemoryRouter, Redirect } from 'react-router'
 import React from 'react'
 import CreatePoll from './create_poll'
 
-describe('UI isolated: Creating a poll form', () => {
+describe('UI isolated: Creating a poll form', async() => {
   it('calls createPoll function with poll details on form submit', () => {
-    const pollFactory = jest.fn()
-    let pollCreationFinished
-    pollFactory.mockReturnValue(new Promise(resolve => pollCreationFinished = resolve ))
+    const createdPollId = "123234"
+    const pollFactory = jest.fn().mockImplementation(() => Promise.resolve(createdPollId))
+
     const createPollComponent = mount(<MemoryRouter>
       <CreatePoll createPoll={pollFactory} />
     </MemoryRouter>)
@@ -26,10 +26,7 @@ describe('UI isolated: Creating a poll form', () => {
 
     expect(createPollComponent.find('#submit').props().disabled).toBe("disabled")
 
-    const createdPollId = "123234"
-    pollCreationFinished(createdPollId)
-
-    expect(createPollComponent.containsMatchingElement(<Redirect to="/created-poll" />)).toBe(true)
+    expect(createPollComponent.containsMatchingElement(<Redirect to="/poll/123234" />)).toBe(true)
   })
 })
 

@@ -1,4 +1,5 @@
 import React from 'react'
+import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types'
 
 export class CreatePoll extends React.Component {
@@ -30,6 +31,7 @@ export class CreatePoll extends React.Component {
     this.setState({ creatingPoll: true })
     this.props.createPoll(this.state.title, [this.state.date])
       .then(pollId => this.setState({ createdPollId: pollId }))
+    this.props.history.push(`/poll/${this.state.createdPollId}`);
   }
 
   handleTitleChange(e){
@@ -45,5 +47,5 @@ CreatePoll.propTypes = {
   createPoll: PropTypes.func.isRequired,
 }
 
-export default CreatePoll
+export default withRouter(CreatePoll)
 
