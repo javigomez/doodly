@@ -4,13 +4,19 @@ import React from 'react'
 import CreatePoll from './create_poll'
 
 describe('UI isolated: Creating a poll form', () => {
-  it('calls createPoll function with poll details on form submit', done => {
+  it('calls createPoll function with poll details on form submit', () => {
     const createdPollId = "123234"
-    // const pollFactory = jest.fn().mockImplementation(() => Promise.resolve(createdPollId))
-    let createPollCallback
-    const pollFactory = jest.fn().mockImplementation((title, dates, cb) => {
-      createPollCallback = cb
+    let createPollPromiseResolve
+    const createPollPromise = new Promise(resolve => {
+      createPollPromiseResolve = resolve
     })
+    const pollFactory = jest.fn().mockImplementation((title, dates) => {
+      console.log(createPollPromise)
+      return createPollPromise
+    })
+    // const pollFactory = jest.fn().mockImplementation((title, dates, cb) => {
+    //   createPollCallback = cb
+    // })
 
     const createPollComponent = mount(<MemoryRouter>
       <CreatePoll createPoll={pollFactory} />
@@ -31,11 +37,12 @@ describe('UI isolated: Creating a poll form', () => {
 
     expect(createPollComponent.find('#submit').props().disabled).toBe("disabled")
 
-    createPollCallback(createdPollId)
+    createPollPromiseResolve(createdPollId)
 
-    createPollComponent.update()
-    expect(createPollComponent.containsMatchingElement(<Redirect to={`/poll/${createdPollId}`} />)).toBe(true)
-    done()
+    return createPollPromise.then(_ => {
+      createPollComponent.update()
+      expect(createPollComponent.containsMatchingElement(<Redirect to={`/poll/${createdPollId}`} />)).toBe(true)
+    })
   })
 })
 

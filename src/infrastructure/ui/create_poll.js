@@ -32,10 +32,10 @@ export class CreatePoll extends React.Component {
   onFormSubmit(e) {
     e.preventDefault()
     this.setState({ creatingPoll: true })
-    this.props.createPoll(this.state.title, [this.state.date], pollId => {
+    this.props.createPoll(this.state.title, [this.state.date]/*, pollId => {
       this.setState({ createdPollId: pollId })
-    })
-      // .then(pollId => this.setState({ createdPollId: pollId }))
+    }*/)
+      .then(pollId => this.setState({ createdPollId: pollId }))
     // this.props.history.push(`/poll/${this.state.createdPollId}`);
   }
 
