@@ -3,10 +3,14 @@ import { MemoryRouter, Redirect } from 'react-router'
 import React from 'react'
 import CreatePoll from './create_poll'
 
-describe('UI isolated: Creating a poll form', async() => {
-  it('calls createPoll function with poll details on form submit', () => {
+describe('UI isolated: Creating a poll form', () => {
+  it('calls createPoll function with poll details on form submit', done => {
     const createdPollId = "123234"
-    const pollFactory = jest.fn().mockImplementation(() => Promise.resolve(createdPollId))
+    // const pollFactory = jest.fn().mockImplementation(() => Promise.resolve(createdPollId))
+    let createPollCallback
+    const pollFactory = jest.fn().mockImplementation((title, dates, cb) => {
+      createPollCallback = cb
+    })
 
     const createPollComponent = mount(<MemoryRouter>
       <CreatePoll createPoll={pollFactory} />
@@ -22,11 +26,16 @@ describe('UI isolated: Creating a poll form', async() => {
       .simulate('submit')
     
     expect(pollFactory.mock.calls.length).toBe(1)
-    expect(pollFactory.mock.calls[0]).toEqual(['An Event Poll', [chosenDates]])
+    expect(pollFactory.mock.calls[0][0]).toEqual('An Event Poll')
+    expect(pollFactory.mock.calls[0][1]).toEqual([chosenDates])
 
     expect(createPollComponent.find('#submit').props().disabled).toBe("disabled")
 
-    expect(createPollComponent.containsMatchingElement(<Redirect to="/poll/123234" />)).toBe(true)
+    createPollCallback(createdPollId)
+
+    createPollComponent.update()
+    expect(createPollComponent.containsMatchingElement(<Redirect to={`/poll/${createdPollId}`} />)).toBe(true)
+    done()
   })
 })
 

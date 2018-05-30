@@ -1,5 +1,5 @@
 import React from 'react'
-import { withRouter } from 'react-router-dom';
+import { withRouter, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types'
 
 export class CreatePoll extends React.Component {
@@ -17,6 +17,9 @@ export class CreatePoll extends React.Component {
   }
 
   render() {
+    if (this.state.createdPollId !== null)
+      return <Redirect to={`/poll/${this.state.createdPollId}`} />
+
     return (
       <form onSubmit={(e) => this.onFormSubmit(e)}>
         <input type='text' id='title' onChange={this.handleTitleChange} />
@@ -29,9 +32,11 @@ export class CreatePoll extends React.Component {
   onFormSubmit(e) {
     e.preventDefault()
     this.setState({ creatingPoll: true })
-    this.props.createPoll(this.state.title, [this.state.date])
-      .then(pollId => this.setState({ createdPollId: pollId }))
-    this.props.history.push(`/poll/${this.state.createdPollId}`);
+    this.props.createPoll(this.state.title, [this.state.date], pollId => {
+      this.setState({ createdPollId: pollId })
+    })
+      // .then(pollId => this.setState({ createdPollId: pollId }))
+    // this.props.history.push(`/poll/${this.state.createdPollId}`);
   }
 
   handleTitleChange(e){
@@ -47,5 +52,5 @@ CreatePoll.propTypes = {
   createPoll: PropTypes.func.isRequired,
 }
 
-export default withRouter(CreatePoll)
+export default CreatePoll
 
