@@ -10,7 +10,9 @@ class App {
   newEventPoll (aTitle, posibleDates) {
     const aEventPoll = new EventPoll(ulid(), this.baseUrl, aTitle, posibleDates)
     this.eventPollRepository.save(aEventPoll)
-    return aEventPoll.id
+    return new Promise((resolve) => {
+      resolve(aEventPoll.id)
+    })
   }
 }
 
