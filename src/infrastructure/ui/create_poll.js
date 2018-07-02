@@ -1,5 +1,5 @@
 import React from 'react'
-import { withRouter, Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types'
 
 export class CreatePoll extends React.Component {
@@ -17,8 +17,13 @@ export class CreatePoll extends React.Component {
   }
 
   render() {
-    if (this.state.createdPollId !== null)
-      return <Redirect to={`/poll/${this.state.createdPollId}`} />
+    if (this.state.createdPollId !== null) {
+      return (
+        <div>
+          <Redirect to={`/poll/${this.state.createdPollId}`} />
+        </div>
+      )
+    }
 
     return (
       <form onSubmit={(e) => this.onFormSubmit(e)}>
@@ -32,9 +37,7 @@ export class CreatePoll extends React.Component {
   onFormSubmit(e) {
     e.preventDefault()
     this.setState({ creatingPoll: true })
-    this.props.createPoll(this.state.title, [this.state.date]/*, pollId => {
-      this.setState({ createdPollId: pollId })
-    }*/)
+    this.props.createPoll(this.state.title, [this.state.date])
       .then(pollId => this.setState({ createdPollId: pollId }))
     // this.props.history.push(`/poll/${this.state.createdPollId}`);
   }

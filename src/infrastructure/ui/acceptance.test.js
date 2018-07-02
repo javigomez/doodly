@@ -2,7 +2,9 @@ import { mount } from 'enzyme'
 import React from 'react'
 import EventPollRepository from '../in_memory/event_poll_repository'
 import CreatePoll from './create_poll'
-import App from '../../application/app';
+import App from '../../application/app'
+import { Router } from 'react-router-dom'
+import { createMemoryHistory } from 'history'
 
 describe('UI integrated: creating a poll form', () => {
   const baseUrl = 'http://domain.org'
@@ -10,25 +12,37 @@ describe('UI integrated: creating a poll form', () => {
   const app = new App(baseUrl, inMemoryPollingRepository)
   const createPoll = app.newEventPoll.bind(app)
 
-  it('App receives the create poll request and returns a created poll with the passed details', () => {
-    const createPollComponent = mount(<CreatePoll createPoll = {createPoll} />)
+  const history = createMemoryHistory()
 
-      createPollComponent.find('#title')
-        .simulate('change', { target: { value: 'An Event Poll' } })
+      it('redirects after submitting the form', () => {
+        const createPollComponent = mount(
+          <Router history={history}>
+            <CreatePoll createPoll = {createPoll} />
+          </Router>
+        )
+    
+          createPollComponent.find('#title')
+            .simulate('change', { target: { value: 'An Event Poll' } })
+    
+          const chosenDates = tomorrow()
+          createPollComponent.find('#date')
+            .simulate('change', { target: { value: chosenDates } })
+          
+          createPollComponent.find('form').first()
+            .simulate('submit')
+    
+          const existingPolls = inMemoryPollingRepository.all()
+          expect(existingPolls.length).toBe(1)
+          expect(existingPolls[0].title).toBe('An Event Poll')
+          expect(existingPolls[0].possibleDates).toEqual([chosenDates])
 
-      const chosenDates = tomorrow()
-      createPollComponent.find('#date')
-        .simulate('change', { target: { value: chosenDates } })
-      
-      createPollComponent.find('form').first()
-        .simulate('submit')
-
-      const existingPolls = inMemoryPollingRepository.all()
-      expect(existingPolls.length).toBe(1)
-      expect(existingPolls[0].title).toBe('An Event Poll')
-      expect(existingPolls[0].possibleDates).toEqual([chosenDates])
+        return Promise.resolve().then(() => {
+          createPollComponent.update()
+          expect(createPollComponent.find('form').length).toBe(0)
+          expect(history.location.pathname).toBe('/poll/' + existingPolls[0].id)
+        })
+      })
     })
-  })
 
 
 function tomorrow() {
