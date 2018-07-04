@@ -1,4 +1,5 @@
 import React from 'react'
+import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types'
 
 export class CreatePoll extends React.Component {
@@ -7,6 +8,8 @@ export class CreatePoll extends React.Component {
     this.state = {
       title: '',
       date: '',
+      creatingPoll: false,
+      createdPollId: null,
     }
     this.onFormSubmit = this.onFormSubmit.bind(this)
     this.handleTitleChange = this.handleTitleChange.bind(this);
@@ -14,18 +17,29 @@ export class CreatePoll extends React.Component {
   }
 
   render() {
+    if (this.state.createdPollId !== null) {
+      return (
+        <div>
+          <Redirect to={`/poll/${this.state.createdPollId}`} />
+        </div>
+      )
+    }
+
     return (
       <form onSubmit={(e) => this.onFormSubmit(e)}>
         <input type='text' id='title' onChange={this.handleTitleChange} />
-        <input type='text' id='date' onChange={this.handleDateChange} />
-        <input type='submit' id='submit' />
+        <input type='date' id='date' onChange={this.handleDateChange} />
+        <input type='submit' id='submit' disabled={this.state.creatingPoll ? 'disabled' : ''} />
       </form>
     )
   }
 
   onFormSubmit(e) {
     e.preventDefault()
+    this.setState({ creatingPoll: true })
     this.props.createPoll(this.state.title, [this.state.date])
+      .then(pollId => this.setState({ createdPollId: pollId }))
+    // this.props.history.push(`/poll/${this.state.createdPollId}`);
   }
 
   handleTitleChange(e){
