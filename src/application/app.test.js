@@ -5,23 +5,24 @@ import EventPollRepository from '../infrastructure/in_memory/event_poll_reposito
 const baseUrl = 'http://domain.org'
 
 describe('a doodle like app', () => {
-  const eventPollRepository = new EventPollRepository()
-  const app = new App(baseUrl, eventPollRepository)
-
   describe('create event scheduling poll', () => {
-    const aTitle = 'Event title'
-    const possibleDates = [new Date(), new Date()]
-    const anEventPollId = app.newEventPoll(aTitle, possibleDates)
-    const anEventPoll = eventPollRepository.findById(anEventPollId)
 
-    expect(anEventPoll).toBeInstanceOf(EventPoll)
+    it('returns an event poll', async () => {
+        const anEventPoll = await createPoll()
+        expect(anEventPoll).toBeInstanceOf(EventPoll)
+    })
 
-    it('has a title and possible dates for the event', () => {
+    it('has a title and possible dates for the event', async () => {
+      const possibleDates = [new Date(), new Date()]
+      const aTitle = 'Event title'
+      const anEventPoll = await createPoll(aTitle, possibleDates)
+
       expect(anEventPoll.title).toBe(aTitle)
       expect(anEventPoll.possibleDates).toBe(possibleDates)
     })
 
-    it('gives an URL to share with attendees to vote', () => {
+    it('gives an URL to share with attendees to vote', async () => {
+      const anEventPoll = await createPoll()
       const aVotingUrl = anEventPoll.votingUrl()
       const expectedUrl = new VotingUrl(baseUrl, anEventPoll)
 
@@ -34,3 +35,13 @@ describe('a doodle like app', () => {
     })
   })
 })
+
+function createPoll (aTitle, possibleDates) {
+  const eventPollRepository = new EventPollRepository()
+  const app = new App(baseUrl, eventPollRepository)
+
+  return app.newEventPoll(aTitle, possibleDates)
+    .then( (anEventPollId) => {
+      return eventPollRepository.findById(anEventPollId)
+    })
+}
