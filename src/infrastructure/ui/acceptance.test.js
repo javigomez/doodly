@@ -14,7 +14,7 @@ describe('UI integrated: creating a poll form', () => {
 
   const history = createMemoryHistory()
 
-      it('redirects after submitting the form', () => {
+      it('redirects after submitting the form', async () => {
         const createPollComponent = mount(
           <Router history={history}>
             <CreatePoll createPoll = {createPoll} />
@@ -31,7 +31,7 @@ describe('UI integrated: creating a poll form', () => {
           createPollComponent.find('form').first()
             .simulate('submit')
     
-          const existingPolls = inMemoryPollingRepository.all()
+          const existingPolls = await inMemoryPollingRepository.all()
           expect(existingPolls.length).toBe(1)
           expect(existingPolls[0].title).toBe('An Event Poll')
           expect(existingPolls[0].possibleDates).toEqual([chosenDates])

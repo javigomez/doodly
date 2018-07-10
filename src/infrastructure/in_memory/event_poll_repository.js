@@ -12,6 +12,8 @@ export default class EventPollRepository {
   }
 
   all () {
-    return Object.keys(this.storage).map(eventPollId => this.storage[eventPollId])
+    return new Promise((resolve) => {
+      resolve(Object.keys(this.storage).map(eventPollId => this.storage[eventPollId]))
+    })
   }
 }
