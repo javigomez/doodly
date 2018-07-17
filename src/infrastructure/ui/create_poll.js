@@ -17,20 +17,19 @@ export class CreatePoll extends React.Component {
   }
 
   render() {
-    if (this.state.createdPollId !== null) {
-      return (
-        <div>
-          <Redirect to={`/poll/${this.state.createdPollId}`} />
-        </div>
-      )
-    }
+    const { createdPollId } = this.state
 
     return (
-      <form onSubmit={(e) => this.onFormSubmit(e)}>
-        <input type='text' id='title' onChange={this.handleTitleChange} />
-        <input type='date' id='date' onChange={this.handleDateChange} />
-        <input type='submit' id='submit' disabled={this.state.creatingPoll ? 'disabled' : ''} />
-      </form>
+      <div>
+        <form onSubmit={(e) => this.onFormSubmit(e)}>
+          <input type='text' id='title' onChange={this.handleTitleChange} />
+          <input type='date' id='date' onChange={this.handleDateChange} />
+          <input type='submit' id='submit' disabled={this.state.creatingPoll ? 'disabled' : ''} />
+        </form>
+        {createdPollId && (
+          <Redirect to={`/poll/${this.state.createdPollId}`}/>
+        )}
+      </div>
     )
   }
 
@@ -39,7 +38,6 @@ export class CreatePoll extends React.Component {
     this.setState({ creatingPoll: true })
     this.props.createPoll(this.state.title, [this.state.date])
       .then(pollId => this.setState({ createdPollId: pollId }))
-    // this.props.history.push(`/poll/${this.state.createdPollId}`);
   }
 
   handleTitleChange(e){
