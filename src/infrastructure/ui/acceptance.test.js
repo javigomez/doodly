@@ -3,7 +3,7 @@ import React from 'react'
 import EventPollRepository from '../in_memory/event_poll_repository'
 import CreatePoll from './create_poll'
 import App from '../../application/app'
-import { Router } from 'react-router-dom'
+import { Router, Route, Redirect, Switch } from 'react-router-dom'
 import { createMemoryHistory } from 'history'
 
 describe('UI integrated: creating a poll form', () => {
@@ -12,12 +12,20 @@ describe('UI integrated: creating a poll form', () => {
   const app = new App(baseUrl, inMemoryPollingRepository)
   const createPoll = app.newEventPoll.bind(app)
 
+  const pollPage = () => <h1>I am a poll</h1>
+
   const history = createMemoryHistory()
 
       it('redirects after submitting the form', async () => {
         const createPollComponent = mount(
           <Router history={history}>
-            <CreatePoll createPoll = {createPoll} />
+            <div id='app'>
+            <Switch>
+              <Route path="/poll/:id" component={pollPage} />
+              <Route path="/create/poll" render={routeProps => <CreatePoll {...routeProps} createPoll={createPoll}/>} />
+              <Redirect from='/' to='/create/poll' key="from-root" />
+              </Switch>
+            </div>
           </Router>
         )
     
@@ -40,6 +48,7 @@ describe('UI integrated: creating a poll form', () => {
           createPollComponent.update()
           expect(createPollComponent.find('form').length).toBe(0)
           expect(history.location.pathname).toBe('/poll/' + existingPolls[0].id)
+          console.log(createPollComponent.html())
         })
       })
     })
