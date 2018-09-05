@@ -29,6 +29,14 @@ describe('a doodle like app', () => {
       expect(aVotingUrl.equalsTo(expectedUrl)).toBe(true)
     })
 
+    it('raises an Error when a poll can`t be saved', (done) => {
+      const eventPollRepository = { save: () => Promise.reject() }
+      const app = new App(baseUrl, eventPollRepository)
+      let myPoll = app.newEventPoll('A poll title', [new Date()])
+      
+      myPoll.catch(done).then((...args) => { console.log('#####', args)})
+    })
+
     describe('someone visits the voting URL', () => {
       it('allows user to confirm attendance', () => {
       })

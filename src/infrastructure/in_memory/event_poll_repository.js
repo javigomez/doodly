@@ -4,11 +4,12 @@ export default class EventPollRepository {
   }
 
   findById (id) {
-    return this.storage[id]
+    return Promise.resolve(this.storage[id])
   }
 
   save (eventPoll) {
     this.storage[eventPoll.id] = eventPoll
+    return Promise.resolve()
   }
 
   all () {
