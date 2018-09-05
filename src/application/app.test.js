@@ -30,11 +30,14 @@ describe('a doodle like app', () => {
     })
 
     it('raises an Error when a poll can`t be saved', (done) => {
-      const eventPollRepository = { save: () => Promise.reject() }
+      const eventPollRepository = { save: () => Promise.reject('Poll could not be saved') }
       const app = new App(baseUrl, eventPollRepository)
       let myPoll = app.newEventPoll('A poll title', [new Date()])
-      
-      myPoll.catch(done).then((...args) => { console.log('#####', args)})
+
+      myPoll.then(result => {
+        expect(result).toBe('Poll could not be saved')
+        done()
+      })
     })
 
     describe('someone visits the voting URL', () => {

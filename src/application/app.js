@@ -12,6 +12,7 @@ class App {
     return this.eventPollRepository
       .save(aEventPoll)
       .then(() => aEventPoll.id)
+      .catch((error) => error)
   }
 }
 
