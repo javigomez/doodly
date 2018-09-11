@@ -39,7 +39,6 @@ export class CreatePoll extends React.Component {
     this.setState({ creatingPoll: true })
     this.props.createPoll(this.state.title, [this.state.date])
       .then(pollId => this.setState({ createdPollId: pollId }))
-    // this.props.history.push(`/poll/${this.state.createdPollId}`);
   }
 
   handleTitleChange(e){

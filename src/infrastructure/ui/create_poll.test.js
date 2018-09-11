@@ -1,8 +1,7 @@
 import { mount } from 'enzyme'
-import { Router } from 'react-router'
+import {MemoryRouter, Redirect, Route, Switch} from 'react-router'
 import React from 'react'
 import CreatePoll from './create_poll'
-import { createMemoryHistory } from 'history'
 
 describe('CreatePoll page', () => {
   const createdPollId = "123234"
@@ -13,17 +12,24 @@ describe('CreatePoll page', () => {
   const pollFactory = jest.fn().mockImplementation((title, dates) => {
     return createPollPromise
   })
-  const history = createMemoryHistory()
   const chosenDates = tomorrow()
+  const ViewPollMock = () => <div></div>
+  const viewPollRoute = <Route component={ViewPollMock} path="/poll/:id"/>
+  const createPollRoute = <Route
+    exact={true} path="/"
+    render={() => <CreatePoll createPoll={pollFactory} /> } />
 
   describe('a successful poll creation', () => {
     let createPollComponent = null
     beforeAll(() => {
       createPollComponent = mount(
-        <Router history={history}>
-          <CreatePoll createPoll={pollFactory} />
-        </Router>)
-      
+        <MemoryRouter initialEntries={["/"]} initialIndex={0}>
+          <Switch>
+            {createPollRoute}
+            {viewPollRoute}
+          </Switch>
+        </MemoryRouter>)
+
       createPollComponent.find('#title')
         .simulate('change', { target: { value: 'An Event Poll' } })
       createPollComponent.find('#date')
@@ -47,7 +53,10 @@ describe('CreatePoll page', () => {
 
       return createPollPromise.then(_ => {
         createPollComponent.update()
-        expect(history.location.pathname).toBe('/poll/' + createdPollId)
+        expect(createPollComponent.containsMatchingElement(viewPollRoute))
+          .toBe(true)
+        expect(createPollComponent.containsMatchingElement(createPollRoute))
+          .toBe(false)
       })
     })
   })
