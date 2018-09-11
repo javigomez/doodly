@@ -29,13 +29,13 @@ describe('a doodle like app', () => {
       expect(aVotingUrl.equalsTo(expectedUrl)).toBe(true)
     })
 
-    it('raises an Error when a poll can`t be saved', (done) => {
+    it('raises an Error when a poll can`t be saved', done => {
       const eventPollRepository = { save: () => Promise.reject('Poll could not be saved') }
       const app = new App(baseUrl, eventPollRepository)
       let myPoll = app.newEventPoll('A poll title', [new Date()])
 
-      myPoll.then(result => {
-        expect(result).toBe('Poll could not be saved')
+      myPoll.catch(reason => {
+        expect(reason).toBe('Poll could not be saved')
         done()
       })
     })
