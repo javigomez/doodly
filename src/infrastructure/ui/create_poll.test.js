@@ -4,7 +4,8 @@ import React from 'react'
 import CreatePoll from './create_poll'
 
 describe('CreatePoll page', () => {
-  const createdPollId = "123234"
+  const createdPollId = '123234'
+  const createdPollTitle = 'An Event Poll'
   let createPollPromiseResolve
   const createPollPromise = new Promise(resolve => {
     createPollPromiseResolve = resolve
@@ -31,7 +32,7 @@ describe('CreatePoll page', () => {
         </MemoryRouter>)
 
       createPollComponent.find('#title')
-        .simulate('change', { target: { value: 'An Event Poll' } })
+        .simulate('change', { target: { value: createdPollTitle } })
       createPollComponent.find('#date')
         .simulate('change', { target: { value: chosenDates } })
       createPollComponent.find('form').first()
@@ -40,7 +41,7 @@ describe('CreatePoll page', () => {
 
     it('calls createPoll function with a Title and Dates', () => {
       expect(pollFactory.mock.calls.length).toBe(1)
-      expect(pollFactory.mock.calls[0][0]).toEqual('An Event Poll')
+      expect(pollFactory.mock.calls[0][0]).toEqual(createdPollTitle)
       expect(pollFactory.mock.calls[0][1]).toEqual([chosenDates])
     })
 
