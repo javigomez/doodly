@@ -3,22 +3,27 @@ import React from 'react'
 import EventPollRepository from '../in_memory/event_poll_repository'
 import CreatePoll from './create_poll'
 import App from '../../application/app'
-import { Router } from 'react-router-dom'
-import { createMemoryHistory } from 'history'
+import { MemoryRouter, Route, Switch } from 'react-router'
 
 describe('UI integrated: creating a poll form', () => {
   const baseUrl = 'http://domain.org'
   const inMemoryPollingRepository = new EventPollRepository()
   const app = new App(baseUrl, inMemoryPollingRepository)
   const createPoll = app.newEventPoll.bind(app)
-
-  const history = createMemoryHistory()
+  const ViewPollMock = () => <div></div>
+  const viewPollRoute = <Route component={ViewPollMock} path="/poll/:id"/>
+  const createPollRoute = <Route
+    exact={true} path="/"
+    render={() => <CreatePoll createPoll={createPoll} /> } />
 
       it('redirects after submitting the form', async () => {
         const createPollComponent = mount(
-          <Router history={history}>
-            <CreatePoll createPoll = {createPoll} />
-          </Router>
+          <MemoryRouter initialEntries={["/"]} initialIndex={0}>
+            <Switch>
+              {createPollRoute}
+              {viewPollRoute}
+            </Switch>
+          </MemoryRouter>
         )
     
           createPollComponent.find('#title')
@@ -36,10 +41,11 @@ describe('UI integrated: creating a poll form', () => {
           expect(existingPolls[0].title).toBe('An Event Poll')
           expect(existingPolls[0].possibleDates).toEqual([chosenDates])
 
-        return Promise.resolve().then(() => {
+        return Promise.resolve().then(_ => {
           createPollComponent.update()
           expect(createPollComponent.find('form').length).toBe(0)
-          expect(history.location.pathname).toBe('/poll/' + existingPolls[0].id)
+          expect(createPollComponent.containsMatchingElement(createPollRoute))
+            .toBe(false)
         })
       })
     })
