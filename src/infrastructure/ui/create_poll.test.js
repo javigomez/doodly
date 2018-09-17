@@ -1,5 +1,5 @@
 import { mount } from 'enzyme'
-import {MemoryRouter, Route, Switch} from 'react-router'
+import { MemoryRouter, Route, Switch } from 'react-router'
 import React from 'react'
 import CreatePoll from './create_poll'
 
