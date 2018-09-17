@@ -1,18 +1,18 @@
 export default class EventPollRepository {
-  constructor () {
+  constructor() {
     this.storage = {}
   }
 
-  findById (id) {
+  findById(id) {
     return Promise.resolve(this.storage[id])
   }
 
-  save (eventPoll) {
+  save(eventPoll) {
     this.storage[eventPoll.id] = eventPoll
     return Promise.resolve()
   }
 
-  all () {
+  all() {
     return new Promise((resolve) => {
       resolve(Object.keys(this.storage).map(eventPollId => this.storage[eventPollId]))
     })
