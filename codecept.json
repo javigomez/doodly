@@ -1,0 +1,15 @@
+{
+  "tests": "./tests/*.spec.js",
+  "timeout": 10000,
+  "output": "./output",
+  "helpers": {
+    "Puppeteer": {
+      "url": "http://localhost",
+      "show": true
+    }
+  },
+  "include": {},
+  "bootstrap": false,
+  "mocha": {},
+  "name": "doodly"
+}
